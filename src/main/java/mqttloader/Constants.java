@@ -51,7 +51,8 @@ public class Constants {
         LOG_LEVEL("l", "log", true, "Log level (SEVERE/WARNING/INFO/ALL).", "INFO"),
         NTP("n", "ntp", true, "NTP server. E.g., ntp.nict.jp", null),
         IN_MEMORY("im", "inmemory", false, "Enable in-memory mode", null),
-        HELP("h", "help", false, "Display help.", null);
+        HELP("h", "help", false, "Display help.", null),
+        PAYLOAD_TEMPLATE("pt", "payloadtempate", true, "payload template to be used.", "");
 
         private String name;
         private String longOpt;

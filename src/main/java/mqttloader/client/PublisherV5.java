@@ -29,8 +29,8 @@ public class PublisherV5 extends AbstractPublisher {
     private MqttClient client;
     private MqttMessage message = new MqttMessage();
 
-    public PublisherV5(int clientNumber, String broker, int qos, boolean retain, String topic, int payloadSize, int numMessage, int pubInterval, Recorder recorder) {
-        super(clientNumber, topic, payloadSize, numMessage, pubInterval, recorder);
+    public PublisherV5(int clientNumber, String broker, int qos, boolean retain, String topic, int payloadSize, int numMessage, int pubInterval, Recorder recorder, String payloadTemplate) {
+        super(clientNumber, topic, payloadSize, numMessage, pubInterval, recorder, payloadTemplate);
         message.setQos(qos);
         message.setRetained(retain);
 
@@ -50,7 +50,11 @@ public class PublisherV5 extends AbstractPublisher {
     @Override
     protected void publish() {
         long currentTime = Util.getCurrentTimeMillis();
-        message.setPayload(Util.genPayloads(payloadSize, currentTime));
+        if (payloadTemplate != null && payloadTemplate.trim().length() > 0) {
+            message.setPayload(Util.genPayloadsByTemplate(payloadTemplate));
+        } else {
+            message.setPayload(Util.genPayloads(payloadSize, currentTime));
+        }
         try {
             client.publish(topic, message);
         } catch (MqttException me) {

@@ -1,4 +1,20 @@
+
+Add command argument: message template.
+```
+-pt,--payloadtempate <arg>   payload template to be used.
+```
+for example:
+```
+./mqttloader -b tcp://127.0.0.1:1883 -v 3 -p 1 -s 1 -m 10000 -t application/sensor_data -pt '{ "ts": ${auto_increment}, "temperature": 32.1, "voltage": 321, "name": "d02", "devid": 2 }'
+```
+<b>-pt</b> specifies the message content template, where  <b>${auto_increment}</b>  is a placeholder, which is automatically replaced with the timestamp when mqttloader is started, and automatically increment every time a new message is published.
+<br>
+
+#
+<br><br>
+
 # MQTTLoader
+
 MQTTLoader is a load testing tool (client tool) for MQTT.  
 It supports both MQTT v5.0 and v3.1.1.
 

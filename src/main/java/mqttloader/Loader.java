@@ -170,11 +170,13 @@ public class Loader {
         int payloadSize = Util.getOptValInt(Opt.PAYLOAD);
         int numMessage = Util.getOptValInt(Opt.NUM_MSG);
         int pubInterval = Util.getOptValInt(Opt.INTERVAL);
+        String payloadTemplate = Util.getOptVal(Opt.PAYLOAD_TEMPLATE);
+        System.out.println("payloadTemplate=" + payloadTemplate);
         for(int i=0;i<numPub;i++){
             if(version==5){
-                publishers.add(new PublisherV5(i, broker, pubQos, retain, topic, payloadSize, numMessage, pubInterval, recorder));
+                publishers.add(new PublisherV5(i, broker, pubQos, retain, topic, payloadSize, numMessage, pubInterval, recorder, payloadTemplate));
             }else{
-                publishers.add(new PublisherV3(i, broker, pubQos, retain, topic, payloadSize, numMessage, pubInterval, recorder));
+                publishers.add(new PublisherV3(i, broker, pubQos, retain, topic, payloadSize, numMessage, pubInterval, recorder, payloadTemplate));
             }
         }
 

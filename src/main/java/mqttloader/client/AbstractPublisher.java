@@ -38,13 +38,16 @@ public abstract class AbstractPublisher extends AbstractClient implements Runnab
     protected volatile boolean cancelled = false;
     private Recorder recorder;
 
-    public AbstractPublisher(int clientNumber, String topic, int payloadSize, int numMessage, int pubInterval, Recorder recorder) {
+    protected final String payloadTemplate;
+
+    public AbstractPublisher(int clientNumber, String topic, int payloadSize, int numMessage, int pubInterval, Recorder recorder, String payloadTemplate) {
         super(PUB_CLIENT_ID_PREFIX + String.format("%05d", clientNumber));
         this.topic = topic;
         this.payloadSize = payloadSize;
         this.numMessage = numMessage;
         this.pubInterval = pubInterval;
         this.recorder = recorder;
+        this.payloadTemplate = payloadTemplate;
     }
 
     public void start(long delay) {

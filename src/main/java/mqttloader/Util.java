@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
@@ -33,6 +34,8 @@ import org.apache.commons.net.ntp.TimeInfo;
 public class Util {
     private static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     private static Random random = new Random();
+    private static final String TIMESTAMP_PLACEHOLDER = "${auto_increment}";
+    private static final AtomicLong counter = new AtomicLong(0);
 
     public static String getOptVal(Constants.Opt opt) {
         return Loader.cmd.getOptionValue(opt.getName(), opt.getDefaultValue());
@@ -96,6 +99,17 @@ public class Util {
 
     public static byte[] genPayloads(int size, long currentTime) {
         return ByteBuffer.allocate(size).putLong(currentTime).array();
+    }
+
+    public static byte[] genPayloadsByTemplate(String template) {
+        
+        if (template != null && template.indexOf(TIMESTAMP_PLACEHOLDER) >= 0) {
+            long currentTime = Loader.startTime + counter.getAndIncrement();
+            return template.replace(TIMESTAMP_PLACEHOLDER, currentTime+"").getBytes();
+        } else {
+            return template.getBytes();
+        }
+        
     }
 
     public static long getCurrentTimeMillis() {
